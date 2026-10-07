@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/PhotoProcessing.Cli/PhotoProcessing.Cli.csproj" />
     <Project Path="src/PhotoProcessing.Core/PhotoProcessing.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
