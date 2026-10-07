@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Bash(photoedit *)",
+      "PowerShell(photoedit *)"
+    ],
+    "deny": [
+      "WebFetch",
+      "WebSearch",
+      "Edit(**/job.json)",
+      "Edit(**/baseline.xmp)",
+      "Write(**/job.json)",
+      "Write(**/baseline.xmp)"
+    ],
+    "defaultMode": "dontAsk"
+  }
+}

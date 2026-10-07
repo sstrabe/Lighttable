@@ -17,6 +17,8 @@ public sealed class PhotoProcessingSettings
     /// <summary>Long edge of the previews Claude looks at.</summary>
     public int PreviewSize { get; set; } = 1500;
 
+    public ClaudeSettings Claude { get; set; } = new();
+
     public string DarktableConfigDir => Path.Combine(Home, "darktable-config");
     public string EditorDir => Path.Combine(Home, "editor");
     public string JobsDir => Path.Combine(EditorDir, "jobs");
@@ -36,4 +38,37 @@ public sealed class PhotoProcessingSettings
         return candidates.FirstOrDefault(File.Exists)
             ?? throw new FileNotFoundException("darktable-cli.exe not found; set PhotoProcessing:DarktableCli");
     }
+}
+
+public sealed class ClaudeSettings
+{
+    /// <summary>claude CLI executable (resolved from PATH by default).</summary>
+    public string Executable { get; set; } = "claude";
+
+    /// <summary>
+    /// <see cref="Executable"/> as a full path: PATH first, then the native installer's
+    /// %USERPROFILE%\.local\bin (a task started at boot may not have the user's PATH).
+    /// </summary>
+    public string ResolveExecutable()
+    {
+        if (Path.IsPathRooted(Executable))
+            return Executable;
+
+        var name = Path.HasExtension(Executable) ? Executable : Executable + ".exe";
+        return (Environment.GetEnvironmentVariable("PATH") ?? "")
+            .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+            .Select(dir => Path.Combine(dir, name))
+            .Append(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin", name))
+            .FirstOrDefault(File.Exists)
+            ?? throw new FileNotFoundException($"'{Executable}' not found on PATH or in ~/.local/bin; set PhotoProcessing:Claude:Executable");
+    }
+
+    /// <summary>Optional model alias/id passed as --model; empty = the CLI's default for your plan.</summary>
+    public string Model { get; set; } = "";
+
+    /// <summary>Optional --effort level (low, medium, high, xhigh, max); empty = CLI default.</summary>
+    public string Effort { get; set; } = "";
+
+    public int MaxTurns { get; set; } = 60;
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(20);
 }
