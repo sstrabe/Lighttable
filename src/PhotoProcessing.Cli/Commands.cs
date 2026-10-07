@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PhotoProcessing.Core;
 using PhotoProcessing.Core.Editing;
 using PhotoProcessing.Core.Heimdall;
+using PhotoProcessing.Core.Nextcloud;
 using PhotoProcessing.Core.Status;
 
 namespace PhotoProcessing.Cli;
@@ -75,5 +76,77 @@ public static class Commands
             Console.WriteLine("warning: Heimdall did not grant offline_access, so the watcher is signed out when you sign out of Heimdall.");
         Console.WriteLine($"Signed in to Heimdall as {signIn.Username}.");
         return 0;
+    }
+
+    public static async Task<int> CheckAsync(PhotoProcessingSettings settings, CancellationToken ct)
+    {
+        var ok = true;
+        void Report(bool pass, string what, string detail)
+        {
+            ok &= pass;
+            Console.WriteLine($"{(pass ? "ok  " : "FAIL")} {what}: {detail}");
+        }
+
+        try
+        {
+            var dt = settings.ResolveDarktableCli();
+            Report(true, "darktable-cli", $"{dt} ({await RunAsync(dt, ["--version"], ct)})");
+        }
+        catch (Exception e) { Report(false, "darktable-cli", e.Message); }
+
+        try
+        {
+            var claude = settings.Claude.ResolveExecutable();
+            Report(true, "claude", $"{claude} ({await RunAsync(claude, ["--version"], ct)})");
+        }
+        catch (Exception e) { Report(false, "claude", e.Message); }
+
+        Report(File.Exists(Path.Combine(EditPipeline.TemplateDir, "CLAUDE.md")), "editor template", EditPipeline.TemplateDir);
+        Console.WriteLine($"     runtime home: {settings.Home}");
+
+        using var heimdall = new HeimdallSession(settings.Heimdall, settings.HeimdallSignInPath);
+        try
+        {
+            await heimdall.GetAccessTokenAsync(ct);
+            var signIn = heimdall.Load()!;
+            Report(true, "heimdall", $"signed in as {signIn.Username} since {signIn.SignedInUtc.ToLocalTime():g}" +
+                (signIn.Offline ? "" : " (without offline_access: it ends when you sign out of Heimdall)"));
+        }
+        catch (Exception e)
+        {
+            Report(false, "heimdall", e.Message);
+            Report(false, "nextcloud", "needs a Heimdall sign-in");
+            return 1;
+        }
+
+        try
+        {
+            using var cloud = new NextcloudClient(settings.Nextcloud.BaseUrl, heimdall.Username, heimdall.GetAccessTokenAsync);
+            var who = $"{cloud.Username}@{settings.Nextcloud.BaseUrl}";
+            if (await cloud.ExistsAsync(settings.Nextcloud.InboxFolder, ct))
+            {
+                var inbox = await cloud.ListAsync(settings.Nextcloud.InboxFolder, ct);
+                Report(true, "nextcloud", $"{who}, {settings.Nextcloud.InboxFolder} has {inbox.Count(i => !i.IsFolder)} file(s)");
+            }
+            else
+            {
+                var top = await cloud.ListAsync("", ct);
+                Report(false, "nextcloud", $"logged in as {who}, but {settings.Nextcloud.InboxFolder} does not exist. " +
+                    $"Top-level folders: {string.Join(", ", top.Where(i => i.IsFolder).Select(i => i.Path))}");
+            }
+        }
+        catch (Exception e) { Report(false, "nextcloud", e.Message); }
+
+        return ok ? 0 : 1;
+    }
+
+    private static async Task<string> RunAsync(string exe, string[] args, CancellationToken ct)
+    {
+        var psi = new ProcessStartInfo(exe) { RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false, CreateNoWindow = true };
+        foreach (var a in args) psi.ArgumentList.Add(a);
+        using var p = Process.Start(psi)!;
+        var output = await p.StandardOutput.ReadToEndAsync(ct);
+        await p.WaitForExitAsync(ct);
+        return output.Split('\n', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault()?.Trim() ?? "";
     }
 }
