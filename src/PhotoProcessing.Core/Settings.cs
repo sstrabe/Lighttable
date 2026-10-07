@@ -18,6 +18,7 @@ public sealed class PhotoProcessingSettings
     public int PreviewSize { get; set; } = 1500;
 
     public ClaudeSettings Claude { get; set; } = new();
+    public NextcloudSettings Nextcloud { get; set; } = new();
     public HeimdallSettings Heimdall { get; set; } = new();
 
     public string DarktableConfigDir => Path.Combine(Home, "darktable-config");
@@ -75,6 +76,27 @@ public sealed class ClaudeSettings
 
     public int MaxTurns { get; set; } = 60;
     public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(20);
+}
+
+public sealed class NextcloudSettings
+{
+    /// <summary>Server base URL, e.g. https://cloud.sstrabe.dev</summary>
+    public string BaseUrl { get; set; } = "https://cloud.sstrabe.dev";
+
+    public string InboxFolder { get; set; } = "Photos/Processing/Inbox";
+    public string OutputFolder { get; set; } = "Photos/Processing/Processed";
+    public string ArchiveFolder { get; set; } = "Photos/Processing/Archive";
+    public string FailedFolder { get; set; } = "Photos/Processing/Failed";
+
+    public TimeSpan PollInterval { get; set; } = TimeSpan.FromSeconds(60);
+
+    /// <summary>A file must be unchanged for this long before it is picked up (guards half-finished uploads).</summary>
+    public TimeSpan SettleTime { get; set; } = TimeSpan.FromSeconds(30);
+
+    public int MaxAttempts { get; set; } = 2;
+
+    public string[] RawExtensions { get; set; } =
+        [".cr2", ".cr3", ".crw", ".nef", ".nrw", ".arw", ".srf", ".sr2", ".dng", ".raf", ".orf", ".rw2", ".pef", ".srw", ".x3f", ".3fr", ".iiq", ".erf", ".mos", ".mrw", ".kdc", ".rwl"];
 }
 
 /// <summary>Sign in with Heimdall (OpenID Connect, authorization code + PKCE); its tokens authorize Nextcloud WebDAV.</summary>
