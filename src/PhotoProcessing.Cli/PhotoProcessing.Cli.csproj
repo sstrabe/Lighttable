@@ -17,6 +17,9 @@
 
   <ItemGroup>
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- The Claude editor workspace template, synced to <Home>/editor before every edit. -->
+    <None Include="..\..\editor\CLAUDE.md" Link="editor\CLAUDE.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\editor\.claude\settings.json" Link="editor\.claude\settings.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

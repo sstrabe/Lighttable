@@ -15,6 +15,9 @@ const string Usage = """
       photoedit zoom <job> L,T,R,B                1:1 crop of a region (fractions 0..1) at full resolution
       photoedit finalize <job>                    full-res JPEG + darktable sidecar into output/
 
+    Automation:
+      photoedit edit <raw|job> [--instructions TEXT]  run the whole Claude edit for one photo
+
     <job> is a job folder path, or a job id (prefix) under the jobs folder.
     """;
 
@@ -94,6 +97,9 @@ try
         case "finalize":
             Console.WriteLine(await OpenJob().FinalizeAsync(Darktable(), cts.Token));
             break;
+
+        case "edit":
+            return await Commands.EditAsync(settings, Positional(0, "<raw|job>"), Option("--instructions"), cts.Token);
 
         default:
             throw new UsageException($"unknown command '{command}'");
