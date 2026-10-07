@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PhotoProcessing.Core;
 using PhotoProcessing.Core.Editing;
@@ -30,6 +33,30 @@ public static class Commands
         if (File.Exists(outcome.Job.NotesPath))
             Console.WriteLine($"\n{File.ReadAllText(outcome.Job.NotesPath).Trim()}");
         return outcome.UsedFallback ? 3 : 0;
+    }
+
+    public static async Task<int> WatchAsync(PhotoProcessingSettings settings, IConfiguration configuration, string[] args, CancellationToken ct)
+    {
+        var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
+        {
+            Args = args[1..],
+            ContentRootPath = AppContext.BaseDirectory,
+        });
+        builder.Configuration.AddConfiguration(configuration);
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSimpleConsole(o => { o.SingleLine = true; o.TimestampFormat = "HH:mm:ss "; });
+        builder.Logging.AddProvider(new FileLoggerProvider(settings.LogsDir));
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
+        builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter("System.Net.Http", LogLevel.Warning);
+
+        builder.Services.AddSingleton(settings);
+        builder.Services.AddSingleton(_ => new HeimdallSession(settings.Heimdall, settings.HeimdallSignInPath));
+        builder.Services.AddHostedService<InboxWatcher>();
+
+        using var host = builder.Build();
+        await host.RunAsync(ct);
+        return 0;
     }
 
     /// <summary>Signs in with Heimdall in the browser and stores the sign-in the watcher uses.</summary>

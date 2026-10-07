@@ -18,6 +18,7 @@ const string Usage = """
     Automation:
       photoedit edit <raw|job> [--instructions TEXT]  run the whole Claude edit for one photo
       photoedit login [--switch-account]           sign in with Heimdall in the browser (once; the watcher reuses it)
+      photoedit watch                              poll the Nextcloud inbox and process new raws
 
     <job> is a job folder path, or a job id (prefix) under the jobs folder.
     --switch-account asks Heimdall for a password even if the browser is already signed in as someone else.
@@ -105,6 +106,9 @@ try
 
         case "login":
             return await Commands.LoginAsync(settings, rest.Contains("--switch-account"), cts.Token);
+
+        case "watch":
+            return await Commands.WatchAsync(settings, configuration, args, cts.Token);
 
         default:
             throw new UsageException($"unknown command '{command}'");
