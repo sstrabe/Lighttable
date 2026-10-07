@@ -17,8 +17,10 @@ const string Usage = """
 
     Automation:
       photoedit edit <raw|job> [--instructions TEXT]  run the whole Claude edit for one photo
+      photoedit login [--switch-account]           sign in with Heimdall in the browser (once; the watcher reuses it)
 
     <job> is a job folder path, or a job id (prefix) under the jobs folder.
+    --switch-account asks Heimdall for a password even if the browser is already signed in as someone else.
     """;
 
 if (args.Length == 0 || args[0] is "-h" or "--help" or "help")
@@ -100,6 +102,9 @@ try
 
         case "edit":
             return await Commands.EditAsync(settings, Positional(0, "<raw|job>"), Option("--instructions"), cts.Token);
+
+        case "login":
+            return await Commands.LoginAsync(settings, rest.Contains("--switch-account"), cts.Token);
 
         default:
             throw new UsageException($"unknown command '{command}'");
