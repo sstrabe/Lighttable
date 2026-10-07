@@ -50,6 +50,12 @@ This file is for **developing** the tool. The prompt for the Claude that *edits 
 - `editor/`: the template for the photo-editing Claude workspace (`CLAUDE.md` and
   `.claude/settings.json`). It is copied into the build output and synced to
   `%USERPROFILE%\.photoprocessing\editor` before every edit.
+- `assets/logo/`: the Lighttable logo. The SVGs are the masters: `mark.svg` (24 px and up),
+  `mark-small.svg` (pixel-fitted for 16–24 px), and `lockup.svg` / `lockup-dark.svg` (mark plus
+  the hand-drawn wordmark). `dotnet run scripts/render-logo.cs` renders the committed PNGs and
+  `.ico` files from them. `lighttable.ico` is both exes' `ApplicationIcon`, and Core embeds
+  `mark.svg` for the `photoedit login` landing page. The tray's notification-area icon is
+  separate: `TrayIcons` draws a status-coloured lens at runtime.
 - `tests/`: xUnit tests. `Fixtures/baseline-IMG_4899.xmp` is real darktable 5.6.1 output.
 - `scripts/`: `publish.ps1` (both apps), `install-watcher.ps1`, `uninstall-watcher.ps1` and `install-tray.ps1` (`-Uninstall` removes it). The
   watcher is a scheduled task with boot and logon triggers, using S4U logon ("run whether

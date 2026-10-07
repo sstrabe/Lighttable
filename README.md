@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/lockup-dark.svg">
+    <img src="assets/logo/lockup.svg" alt="Lighttable" width="360">
+  </picture>
+</p>
+
 # PhotoProcessing
 
 Upload a raw file to Nextcloud and get back a finished JPEG, edited by Claude in darktable.
