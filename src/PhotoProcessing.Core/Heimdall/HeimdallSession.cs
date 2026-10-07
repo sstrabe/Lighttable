@@ -27,6 +27,9 @@ public sealed class HeimdallSession(HeimdallSettings settings, string path, Http
     private static readonly TimeSpan LoginTimeout = TimeSpan.FromMinutes(5);
     private static readonly JsonSerializerOptions Json = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
 
+    /// <summary>assets/logo/mark.svg as a data URI, for the page the browser lands on after signing in.</summary>
+    private static readonly string Logo = LoadLogo();
+
     private readonly HeimdallClient _client = new(settings, handler);
     private readonly SemaphoreSlim _gate = new(1, 1);
 
@@ -221,13 +224,22 @@ public sealed class HeimdallSession(HeimdallSettings settings, string path, Http
         }
     }
 
+    private static string LoadLogo()
+    {
+        using var stream = typeof(HeimdallSession).Assembly.GetManifestResourceStream("lighttable-mark.svg")!;
+        using var bytes = new MemoryStream();
+        stream.CopyTo(bytes);
+        return "data:image/svg+xml;base64," + Convert.ToBase64String(bytes.ToArray());
+    }
+
     private static void Respond(HttpListenerContext context, HttpStatusCode status, string title, string detail)
     {
         try
         {
             var html = $"""
-                <!doctype html><meta charset="utf-8"><title>PhotoProcessing</title>
+                <!doctype html><meta charset="utf-8"><title>PhotoProcessing</title><link rel="icon" href="{Logo}">
                 <body style="font-family:system-ui,sans-serif;margin:4em auto;max-width:32em">
+                <img src="{Logo}" width="64" height="64" alt="">
                 <h1>{WebUtility.HtmlEncode(title)}</h1><p>{WebUtility.HtmlEncode(detail)}</p>
                 """;
             var bytes = Encoding.UTF8.GetBytes(html);

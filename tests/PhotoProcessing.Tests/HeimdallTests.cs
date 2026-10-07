@@ -198,7 +198,9 @@ public sealed class HeimdallTests : IDisposable
 
         using var page = await landing!;
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
-        Assert.Contains("Signed in as lighttable", await page.Content.ReadAsStringAsync());
+        var html = await page.Content.ReadAsStringAsync();
+        Assert.Contains("Signed in as lighttable", html);
+        Assert.Contains("<img src=\"data:image/svg+xml;base64,", html); // the embedded logo
     }
 
     [Fact]

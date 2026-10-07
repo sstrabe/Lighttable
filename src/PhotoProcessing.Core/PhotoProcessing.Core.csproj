@@ -6,4 +6,9 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="4.153.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Shown on the page `photoedit login` sends the browser back to. -->
+    <EmbeddedResource Include="..\..\assets\logo\mark.svg" LogicalName="lighttable-mark.svg" />
+  </ItemGroup>
+
 </Project>
