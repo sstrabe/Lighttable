@@ -18,8 +18,12 @@ public sealed class PhotoProcessingSettings
     public int PreviewSize { get; set; } = 1500;
 
     public ClaudeSettings Claude { get; set; } = new();
+    public HeimdallSettings Heimdall { get; set; } = new();
 
     public string DarktableConfigDir => Path.Combine(Home, "darktable-config");
+
+    /// <summary>The Heimdall sign-in (refresh token, username) that `photoedit login` stores.</summary>
+    public string HeimdallSignInPath => Path.Combine(Home, "state", "heimdall.json");
     public string EditorDir => Path.Combine(Home, "editor");
     public string JobsDir => Path.Combine(EditorDir, "jobs");
     public string LogsDir => Path.Combine(Home, "logs");
@@ -71,4 +75,29 @@ public sealed class ClaudeSettings
 
     public int MaxTurns { get; set; } = 60;
     public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(20);
+}
+
+/// <summary>Sign in with Heimdall (OpenID Connect, authorization code + PKCE); its tokens authorize Nextcloud WebDAV.</summary>
+public sealed class HeimdallSettings
+{
+    /// <summary>The realm's issuer; the endpoints come from its discovery document.</summary>
+    public string Issuer { get; set; } = "https://sso.heimdall.sstrabe.dev/realms/heimdall";
+
+    /// <summary>From the app's OAuth2 page on Heimdall.</summary>
+    public string ClientId { get; set; } = "";
+
+    /// <summary>Only for a confidential app; a public app has none. Keep it in user secrets.</summary>
+    public string ClientSecret { get; set; } = "";
+
+    /// <summary>
+    /// Registered on the app's OAuth2 page, exactly. `photoedit login` listens on this loopback address
+    /// for Heimdall's redirect back.
+    /// </summary>
+    public string RedirectUri { get; set; } = "http://127.0.0.1:38517/callback";
+
+    /// <summary>
+    /// profile gives preferred_username, the WebDAV path. offline_access keeps the watcher signed in
+    /// after you sign out of Heimdall, until it goes 30 days unused.
+    /// </summary>
+    public string Scope { get; set; } = "openid profile nextcloud.files.write offline_access";
 }
