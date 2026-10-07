@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- mark.svg fitted to the 16 px pixel grid (also used at 20 and 24 px): the leader's taper
+       and the second row of holes don't survive at this size. -->
+  <rect width="16" height="16" rx="3.5" fill="#FFE9BE"/>
+  <rect x=".5" y=".5" width="15" height="15" rx="3" fill="none" stroke="#D9B676"/>
+  <rect x="4" y="2" width="2" height="1" fill="#3A3D46"/>
+  <rect x="3" y="3" width="4" height="10" fill="#17181D"/>
+  <rect x="7" y="10" width="6" height="3" fill="#D9682A"/>
+  <g fill="#FFF7E6">
+    <rect x="8" y="11" width="1" height="1"/>
+    <rect x="10" y="11" width="1" height="1"/>
+    <rect x="12" y="11" width="1" height="1"/>
+  </g>
+</svg>

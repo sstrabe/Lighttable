@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 66">
+  <!-- For light backgrounds. The wordmark is drawn, not set in a font: "light" in a hairline,
+       "table" in bold, on a 24-unit x-height (baseline y=48 before the shift). -->
+  <svg x="6" y="6" width="48" height="48" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="14" fill="#FFE9BE"/>
+    <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#E3C68E" stroke-width="2"/>
+    <rect x="16" y="12" width="6" height="4" rx="1" fill="#3A3D46"/>
+    <rect x="11" y="15" width="16" height="4" rx="1.5" fill="#3A3D46"/>
+    <rect x="12" y="18" width="14" height="32" fill="#17181D"/>
+    <rect x="11" y="49" width="16" height="4" rx="1.5" fill="#3A3D46"/>
+    <path d="M26 36 H39 C43 36 43.5 44 47.5 44 H50 Q52 44 52 46 V50 Q52 52 50 52 H26 Z" fill="#D9682A"/>
+    <g fill="#FFF7E6">
+      <rect x="28.5" y="37.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="33" y="37.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="37.5" y="37.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="28.5" y="47.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="33" y="47.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="37.5" y="47.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="42" y="47.8" width="2.4" height="2.4" rx="0.5"/>
+      <rect x="46.5" y="47.8" width="2.4" height="2.4" rx="0.5"/>
+    </g>
+  </svg>
+  <g transform="translate(68 -1)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#D9682A" stroke-width="3">
+      <path d="M1.5 14.5 V46.5"/>
+      <path d="M10.5 25.5 V46.5"/>
+      <circle cx="30" cy="36" r="10.5"/>
+      <path d="M40.5 25.5 V50 A10.5 10.5 0 0 1 20.91 55.25"/>
+      <path d="M49.5 14.5 V46.5 M49.5 36 A10.5 10.5 0 0 1 70.5 36 V46.5"/>
+      <path d="M78.5 25.5 H90.5 M83 18 V40 A6.5 6.5 0 0 0 89.5 46.5"/>
+    </g>
+    <circle cx="10.5" cy="17.5" r="2" fill="#D9682A"/>
+    <g stroke="#17181D" stroke-width="7">
+      <path d="M100.5 27.5 H113.5 M105.5 19 V39 A5.5 5.5 0 0 0 111 44.5"/>
+      <circle cx="132" cy="36" r="8.5"/>
+      <path d="M140.5 27.5 V44.5"/>
+      <path d="M152.5 16.5 V44.5"/>
+      <circle cx="161" cy="36" r="8.5"/>
+      <path d="M182.5 16.5 V44.5"/>
+      <path d="M195.5 36 H212.5 A8.5 8.5 0 1 0 210.01 42.01"/>
+    </g>
+  </g>
+</svg>
