@@ -7,6 +7,8 @@
     <AssemblyName>photoedit-tray</AssemblyName>
     <RootNamespace>PhotoProcessing.Tray</RootNamespace>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <!-- The exe's icon; the notification-area icon is drawn at runtime to show status (TrayIcons). -->
+    <ApplicationIcon>..\..\assets\logo\lighttable.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

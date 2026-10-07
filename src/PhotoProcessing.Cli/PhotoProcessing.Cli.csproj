@@ -5,6 +5,7 @@
     <AssemblyName>photoedit</AssemblyName>
     <RootNamespace>PhotoProcessing.Cli</RootNamespace>
     <UserSecretsId>photoprocessing-photoedit</UserSecretsId>
+    <ApplicationIcon>..\..\assets\logo\lighttable.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
