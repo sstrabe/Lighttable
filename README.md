@@ -10,7 +10,7 @@
 Upload a raw file to Nextcloud and get back a finished JPEG, edited by Claude in darktable.
 
 ```
-cloud.sstrabe.dev  Photos/Processing/     this PC (photoedit watch)
+cloud.strabix.com  Photos/Processing/     this PC (photoedit watch)
 ─────────────────────────────────────     ─────────────────────────────────────────────
 Inbox/IMG_4899.CR2          ──download──▶  job folder
 Inbox/IMG_4899.txt          (optional        │ darktable renders its defaults (v00)
@@ -33,7 +33,7 @@ per-token billing.
 Requirements: darktable 5.6, Claude Code (`claude` logged in), and the .NET 10 SDK.
 
 1. **Register the app on Heimdall.** Nextcloud access comes from signing in with Heimdall
-   (sso.heimdall.sstrabe.dev). On the app's OAuth2 page:
+   (sso.heimdall.strabix.com). On the app's OAuth2 page:
    - Redirect URI: `http://127.0.0.1:38517/callback`. `photoedit login` listens there for the
      redirect back, so it must match exactly.
    - Scopes: `openid profile nextcloud.files.write offline_access`.

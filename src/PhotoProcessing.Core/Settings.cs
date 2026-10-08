@@ -80,8 +80,8 @@ public sealed class ClaudeSettings
 
 public sealed class NextcloudSettings
 {
-    /// <summary>Server base URL, e.g. https://cloud.sstrabe.dev</summary>
-    public string BaseUrl { get; set; } = "https://cloud.sstrabe.dev";
+    /// <summary>Server base URL, e.g. https://cloud.strabix.com</summary>
+    public string BaseUrl { get; set; } = "https://cloud.strabix.com";
 
     public string InboxFolder { get; set; } = "Photos/Processing/Inbox";
     public string OutputFolder { get; set; } = "Photos/Processing/Processed";
@@ -103,7 +103,7 @@ public sealed class NextcloudSettings
 public sealed class HeimdallSettings
 {
     /// <summary>The realm's issuer; the endpoints come from its discovery document.</summary>
-    public string Issuer { get; set; } = "https://sso.heimdall.sstrabe.dev/realms/heimdall";
+    public string Issuer { get; set; } = "https://sso.heimdall.strabix.com/realms/heimdall";
 
     /// <summary>From the app's OAuth2 page on Heimdall.</summary>
     public string ClientId { get; set; } = "";

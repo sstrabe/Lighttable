@@ -1,7 +1,7 @@
 # PhotoProcessing
 
 This tool develops raws with darktable, with Claude doing the edits. A raw uploaded to
-Nextcloud (`Photos/Processing/Inbox` on cloud.sstrabe.dev) is downloaded. Headless Claude
+Nextcloud (`Photos/Processing/Inbox` on cloud.strabix.com) is downloaded. Headless Claude
 Code then edits it by iterating on a JSON recipe that is compiled into darktable history.
 The JPEG goes back to `Photos/Processing/Processed`, and the raw goes to
 `Photos/Processing/Archive` with a darktable `.xmp` sidecar and Claude's notes.
@@ -95,7 +95,7 @@ then `PHOTOPROC_`-prefixed env vars (`PHOTOPROC_PhotoProcessing__Nextcloud__Inbo
 ## Nextcloud access: Heimdall sign-in
 
 Nextcloud WebDAV is authorized with access tokens from Heimdall
-(`sso.heimdall.sstrabe.dev/realms/heimdall`, Keycloak), not app passwords. The scopes are
+(`sso.heimdall.strabix.com/realms/heimdall`, Keycloak), not app passwords. The scopes are
 `openid profile nextcloud.files.write offline_access`. The WebDAV path uses the
 `preferred_username` from userinfo.
 

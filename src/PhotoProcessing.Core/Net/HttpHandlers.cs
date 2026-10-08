@@ -5,13 +5,13 @@ namespace PhotoProcessing.Core.Net;
 
 internal static class HttpHandlers
 {
-    /// <summary>The handler for talking to the sstrabe.dev servers (Nextcloud, Heimdall).</summary>
+    /// <summary>The handler for talking to the strabix.com servers (Nextcloud, Heimdall).</summary>
     public static SocketsHttpHandler Create() => new() { ConnectCallback = ConnectAnyAddressAsync };
 
     /// <summary>
     /// Tries each resolved address with a short timeout. .NET otherwise walks the addresses one by one
     /// with the OS connect timeout (21 s on Windows), so a host with a dead IPv6 route — as
-    /// cloud.sstrabe.dev has been seen to have from some networks — stalls every new connection.
+    /// cloud.strabix.com has been seen to have from some networks — stalls every new connection.
     /// </summary>
     private static async ValueTask<Stream> ConnectAnyAddressAsync(SocketsHttpConnectionContext context, CancellationToken ct)
     {
