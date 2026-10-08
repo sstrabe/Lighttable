@@ -4,6 +4,8 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  # Chrome's WebMCP origin trial (src/components/webmcp.tsx), for https://lighttable.sstrabe.dev only. Expires 2027-03-30.
+  Origin-Trial: AnorVU4eX8MeedMVJJPveWOJtftuSJxIVLSOoQzsc7rBnKSgrVdRNu21llCMF9SoIxonGbqTnjLugS8dUsuSnQcAAABWeyJvcmlnaW4iOiJodHRwczovL2xpZ2h0dGFibGUuc3N0cmFiZS5kZXY6NDQzIiwiZmVhdHVyZSI6IldlYk1DUCIsImV4cGlyeSI6MTgwNjM2NDgwMH0=
 
 # Next.js puts a content hash in these file names.
 /_next/static/*

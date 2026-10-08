@@ -26,7 +26,8 @@ It is a static site, so there is no server code, no cookies, no route handlers a
   (`get_lighttable_overview`, `list_example_edits`, `show_on_page`) on `document.modelContext`, built
   from `content.ts`, so a copy change reaches them too. Without WebMCP support it does nothing. Types
   come from `webmcp-types`, the spec group's package; the API is still changing, so check it when
-  bumping that package.
+  bumping that package. Chrome exposes it through an origin trial: the token is the `Origin-Trial`
+  header in `public/_headers`, valid for lighttable.sstrabe.dev until 2027-03-30.
 - `public/_headers` sets the response headers (Cloudflare reads it from the assets folder).
 
 ```bash
