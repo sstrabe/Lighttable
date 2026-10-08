@@ -23,8 +23,9 @@ export const metadata: Metadata = {
 const repo = "https://github.com/sstrabe/Lighttable";
 const setupGuide = `${repo}#setup`;
 
-// A real edit: the camera's own JPEG and Claude's edit of the raw, made without instructions.
-const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after.jpg", alt: "A forest valley in the mountains", beforeLabel: "Camera JPEG" };
+// A real edit: the camera's own JPEG and Claude's edit of the raw, made without instructions, with lines from its notes.md.
+const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after.jpg", alt: "A forest valley in the mountains" };
+const heroModules = ["exposure", "color calibration", "sigmoid", "tone equalizer", "color balance rgb", "local contrast"];
 
 const gallery: { before: string; after: string; alt: string; beforeLabel: string; caption: string; modules?: string[] }[] = [
     {
@@ -145,8 +146,16 @@ export default function Home() {
                     </div>
 
                     <Compare {...hero} className="mt-8" />
-                    <p className="mt-3 text-[13px] text-muted">
-                        Edited without instructions. Drag across the photo to compare the camera&apos;s own JPEG with Claude&apos;s edit.
+                    <div className="mt-3 flex flex-wrap items-start justify-between gap-x-8 gap-y-2">
+                        <p className="max-w-3xl text-sm">
+                            No instructions. From Claude&apos;s notes: “The backlit conifers were nearly black and the sky
+                            was washed out.” Claude lifted the shadows to open the forest, pulled the highlights down to
+                            keep the clouds, and left some of the mountain haze in because it is part of the scene.
+                        </p>
+                        <p className="text-[13px] text-muted">Drag across the photo to compare.</p>
+                    </div>
+                    <p className="mt-2 flex flex-wrap gap-1.5">
+                        {heroModules.map((m) => <Badge key={m}>{m}</Badge>)}
                     </p>
                 </section>
 
