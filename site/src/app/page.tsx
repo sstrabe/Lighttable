@@ -36,13 +36,13 @@ const gallery: { before: string; after: string; alt: string; beforeLabel: string
         caption: "Dusk, with the trees in silhouette. A cleaner, bluer sky and a brighter contrail, with the blacks kept solid.",
     },
     {
-        // PLACEHOLDER: a drawn scene, not a real edit. Replace with a real pair and a line from its notes.md.
-        before: "/photos/valley-before.svg",
-        after: "/photos/valley-after.svg",
-        alt: "A green valley",
+        // A real edit, darktable's default render against Claude's, with lines from its notes.md.
+        before: "/photos/dusk-before.jpg",
+        after: "/photos/dusk-after.jpg",
+        alt: "Dusk over the mountains",
         beforeLabel: "darktable defaults",
-        caption: "Flat and slightly warm. Neutralised the white balance, opened the shadows in the trees and added local contrast to the hills.",
-        modules: ["color calibration", "tone equalizer", "local contrast"],
+        caption: "Instructions: “make the sunset pop”. From Claude's notes: “The sky was slightly hazy and flat and the sunset glow looked washed out.” Claude warmed the white balance with a touch of magenta to keep the salmon-pink glow, and lifted the shadows gently to separate the ridges.",
+        modules: ["exposure", "color calibration", "sigmoid", "color balance rgb", "local contrast", "tone equalizer"],
     },
 ];
 
