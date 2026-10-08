@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens in Heimdall's style (from the heimdall-style skill's globals.css, after the
+ * Heimdall dashboard's src/app/globals.css). Pages use these semantic names (bg-surface,
+ * text-muted, border-line, ...) and never raw colours, so light and dark stay in step. White
+ * cards on a light grey page, one accent for actions, links and selection; status colours only
+ * for status.
+ *
+ * ACCENT: Lighttable's violet, OKLCH hue 300 (the skill's accent.py). The logo's own orange
+ * stays in the logo: it is too close to Heimdall's.
+ *
+ * Theme: <html data-theme="light|dark"> when one is picked, otherwise the system preference
+ * decides. The static site has no switcher, so it always follows the system.
+ */
+
+:root {
+    color-scheme: light;
+    --page: #f2f3f5;
+    --surface: #ffffff;
+    --subtle: #f7f8f9;
+    --hover: #f5f2fa; /* accent: row/item hover, a near-white tint */
+    --line: #d9dce1;
+    --line-subtle: #e9ebee;
+    --fg: #1d1f23;
+    --muted: #5b616b;
+    --faint: #8a9099;
+    --primary: #6c44a4; /* accent */
+    --primary-hover: #533381; /* accent */
+    --primary-soft: #f0ecf9; /* accent: active nav, selection */
+    --on-primary: #ffffff;
+    --link: #6c44a4; /* accent */
+    --success: #1b7f42;
+    --success-soft: #e5f5eb;
+    --warning: #8f5300;
+    --warning-soft: #fff3dc;
+    --danger: #c4243c;
+    --danger-hover: #a01b30;
+    --on-danger: #ffffff;
+    --danger-soft: #fdebee;
+    --info: #1f5fbf;
+    --info-soft: #e8f0fc;
+    --ring: rgb(108 68 164 / 0.35); /* accent */
+    --shadow: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.04);
+    --overlay: rgb(17 20 24 / 0.45);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #141518;
+    --surface: #1c1e22;
+    --subtle: #22252a;
+    --hover: #2d2934; /* accent */
+    --line: #353941;
+    --line-subtle: #2a2d33;
+    --fg: #eef0f3;
+    --muted: #a9afb8;
+    --faint: #7c838d;
+    --primary: #845dc0; /* accent */
+    --primary-hover: #9774d0; /* accent */
+    --primary-soft: #2e2341; /* accent */
+    --on-primary: #ffffff;
+    --link: #b897f0; /* accent */
+    --success: #4cc27a;
+    --success-soft: #16301f;
+    --warning: #f0b252;
+    --warning-soft: #33280f;
+    --danger: #f2687c;
+    --danger-hover: #ff8596;
+    --on-danger: #1a0b0e;
+    --danger-soft: #3a1a20;
+    --info: #7fadff;
+    --info-soft: #1b2a45;
+    --ring: rgb(184 151 240 / 0.4); /* accent */
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+    --overlay: rgb(0 0 0 / 0.6);
+}
+
+/* The same dark values again, for "system" (no data-theme attribute). */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --page: #141518;
+        --surface: #1c1e22;
+        --subtle: #22252a;
+        --hover: #2d2934; /* accent */
+        --line: #353941;
+        --line-subtle: #2a2d33;
+        --fg: #eef0f3;
+        --muted: #a9afb8;
+        --faint: #7c838d;
+        --primary: #845dc0; /* accent */
+        --primary-hover: #9774d0; /* accent */
+        --primary-soft: #2e2341; /* accent */
+        --on-primary: #ffffff;
+        --link: #b897f0; /* accent */
+        --success: #4cc27a;
+        --success-soft: #16301f;
+        --warning: #f0b252;
+        --warning-soft: #33280f;
+        --danger: #f2687c;
+        --danger-hover: #ff8596;
+        --on-danger: #1a0b0e;
+        --danger-soft: #3a1a20;
+        --info: #7fadff;
+        --info-soft: #1b2a45;
+        --ring: rgb(184 151 240 / 0.4); /* accent */
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+        --overlay: rgb(0 0 0 / 0.6);
+    }
+}
+
+@theme inline {
+    --color-page: var(--page);
+    --color-surface: var(--surface);
+    --color-subtle: var(--subtle);
+    --color-hover: var(--hover);
+    --color-line: var(--line);
+    --color-line-subtle: var(--line-subtle);
+    --color-fg: var(--fg);
+    --color-muted: var(--muted);
+    --color-faint: var(--faint);
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-soft: var(--primary-soft);
+    --color-on-primary: var(--on-primary);
+    --color-link: var(--link);
+    --color-success: var(--success);
+    --color-success-soft: var(--success-soft);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-danger: var(--danger);
+    --color-danger-hover: var(--danger-hover);
+    --color-on-danger: var(--on-danger);
+    --color-danger-soft: var(--danger-soft);
+    --color-info: var(--info);
+    --color-info-soft: var(--info-soft);
+    --color-overlay: var(--overlay);
+    --shadow-card: var(--shadow);
+    --font-sans:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        sans-serif;
+    --font-mono:
+        ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+html {
+    /* 14px root: every rem-based Tailwind size (spacing, text-sm, h-8, w-60,
+       max-w-6xl) comes out at 7/8 of stock. That density is the look. */
+    font-size: 14px;
+    /* The canvas itself, not only body: Safari paints it under its bars. */
+    background: var(--page);
+}
+
+body {
+    background: var(--page);
+    color: var(--fg);
+}
+
+:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 3px var(--ring);
+    border-radius: 4px;
+}
+
+::selection {
+    background: var(--primary-soft);
+}
