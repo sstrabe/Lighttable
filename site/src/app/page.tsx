@@ -23,9 +23,11 @@ export const metadata: Metadata = {
 const repo = "https://github.com/sstrabe/Lighttable";
 const setupGuide = `${repo}#setup`;
 
+// A real edit: darktable's default render and Claude's JPEG of the same raw, edited without instructions.
+const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after.jpg", alt: "A forest valley in the mountains" };
+
 // PLACEHOLDERS: drawn scenes, not real edits. Replace each pair with a baseline render
 // (`photoedit new`, its preview) and Claude's JPEG of the same raw, plus a line from its notes.md.
-const hero = { before: "/photos/dusk-before.svg", after: "/photos/dusk-after.svg", alt: "A lake at dusk" };
 
 const gallery: { before: string; after: string; alt: string; note: string; modules: string[] }[] = [
     {
@@ -143,7 +145,7 @@ export default function Home() {
 
                     <Compare {...hero} className="mt-8" />
                     <p className="mt-3 text-[13px] text-muted">
-                        Drag across the photo to compare darktable&apos;s defaults with Claude&apos;s edit.
+                        Edited without instructions. Drag across the photo to compare darktable&apos;s defaults with Claude&apos;s edit.
                     </p>
                 </section>
 
