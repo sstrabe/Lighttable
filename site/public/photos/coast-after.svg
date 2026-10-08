@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000">
+<g>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0.00" stop-color="#7fa6c4"/><stop offset="0.33" stop-color="#b9cfdc"/><stop offset="0.67" stop-color="#f1d9be"/><stop offset="1.00" stop-color="#f6c69a"/></linearGradient>
+    <radialGradient id="sun"><stop offset="0" stop-color="#fff4de"/><stop offset="0.35" stop-color="#fff4de" stop-opacity="0.9"/><stop offset="1" stop-color="#fff4de" stop-opacity="0"/></radialGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9a982"/><stop offset="1" stop-color="#2f5f6e"/></linearGradient>
+  </defs>
+  <rect width="1500" height="1000" fill="url(#sky)"/>
+  <circle cx="1180" cy="600" r="240" fill="url(#sun)"/>
+  <path d="M0 1000 L0 640 L0 801.8 L50 758.5 L100 712.8 L150 624.7 L200 521.0 L250 491.2 L300 480.5 L350 488.3 L400 539.0 L450 540.9 L500 519.4 L550 528.9 L600 523.9 L650 564.3 L650 1000 Z" fill="#46404a"/>
+  <rect y="700" width="1500" height="300" fill="url(#water)"/>
+  <rect x="1100" y="720" width="160" height="4" rx="2" fill="#fff4de" opacity="0.7"/><rect x="1109" y="762" width="142" height="4" rx="2" fill="#fff4de" opacity="0.6"/><rect x="1118" y="804" width="124" height="4" rx="2" fill="#fff4de" opacity="0.49999999999999994"/><rect x="1127" y="846" width="106" height="4" rx="2" fill="#fff4de" opacity="0.3999999999999999"/><rect x="1136" y="888" width="88" height="4" rx="2" fill="#fff4de" opacity="0.29999999999999993"/><rect x="1145" y="930" width="70" height="4" rx="2" fill="#fff4de" opacity="0.19999999999999996"/>
+</g></svg>
