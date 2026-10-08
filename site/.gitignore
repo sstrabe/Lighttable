@@ -42,3 +42,6 @@ next-env.d.ts
 
 # copied from assets/logo by scripts/copy-logo.mjs
 /public/logo/
+
+# wrangler dev state
+/.wrangler/

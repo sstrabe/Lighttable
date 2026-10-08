@@ -1,4 +1,4 @@
-# Cloudflare Pages response headers.
+# Response headers for Cloudflare static assets.
 /*
   Content-Security-Policy: frame-ancestors 'none'
   X-Content-Type-Options: nosniff
