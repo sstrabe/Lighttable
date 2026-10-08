@@ -28,12 +28,13 @@ const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after
 
 const gallery: { before: string; after: string; alt: string; beforeLabel: string; caption: string; modules?: string[] }[] = [
     {
-        // A real edit, the camera's JPEG against Claude's.
+        // A real edit, the camera's JPEG against Claude's, with lines from its notes.md.
         before: "/photos/contrail-before.jpg",
         after: "/photos/contrail-after.jpg",
         alt: "A contrail over trees at dusk",
         beforeLabel: "Camera JPEG",
-        caption: "Dusk, with the trees in silhouette. A cleaner, bluer sky and a brighter contrail, with the blacks kept solid.",
+        caption: "No instructions. From Claude's notes: “The sky looked slightly grey and flat.” Claude added vibrance and contrast for a cleaner twilight blue and kept the as-shot white balance. It tried deeper blacks first, saw they erased the meadow, and backed off.",
+        modules: ["exposure", "sigmoid", "color balance rgb"],
     },
     {
         // A real edit, the camera's JPEG against Claude's, with lines from its notes.md.
