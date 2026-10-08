@@ -26,23 +26,23 @@ const setupGuide = `${repo}#setup`;
 // A real edit: the camera's own JPEG and Claude's edit of the raw, made without instructions.
 const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after.jpg", alt: "A forest valley in the mountains", beforeLabel: "Camera JPEG" };
 
-// PLACEHOLDERS: drawn scenes, not real edits. Replace each pair with a baseline render
-// (`photoedit new`, its preview) and Claude's JPEG of the same raw, plus a line from its notes.md.
-
-const gallery: { before: string; after: string; alt: string; note: string; modules: string[] }[] = [
+const gallery: { before: string; after: string; alt: string; beforeLabel: string; caption: string; modules?: string[] }[] = [
     {
+        // A real edit, the camera's JPEG against Claude's.
+        before: "/photos/contrail-before.jpg",
+        after: "/photos/contrail-after.jpg",
+        alt: "A contrail over trees at dusk",
+        beforeLabel: "Camera JPEG",
+        caption: "Dusk, with the trees in silhouette. A cleaner, bluer sky and a brighter contrail, with the blacks kept solid.",
+    },
+    {
+        // PLACEHOLDER: a drawn scene, not a real edit. Replace with a real pair and a line from its notes.md.
         before: "/photos/valley-before.svg",
         after: "/photos/valley-after.svg",
         alt: "A green valley",
-        note: "Flat and slightly warm. Neutralised the white balance, opened the shadows in the trees and added local contrast to the hills.",
+        beforeLabel: "darktable defaults",
+        caption: "Flat and slightly warm. Neutralised the white balance, opened the shadows in the trees and added local contrast to the hills.",
         modules: ["color calibration", "tone equalizer", "local contrast"],
-    },
-    {
-        before: "/photos/coast-before.svg",
-        after: "/photos/coast-after.svg",
-        alt: "A coast at sunset",
-        note: "Hazy, with a cool cast. Kept the sunset golden, deepened the sea and brought the cliff's blacks down without crushing them.",
-        modules: ["exposure", "sigmoid", "color balance rgb"],
     },
 ];
 
@@ -149,17 +149,18 @@ export default function Home() {
                     </p>
                 </section>
 
-                <Section id="examples" title="Every edit comes with notes"
-                         description="Claude writes down what it saw in the default render, what it changed and why, and which darktable modules it used.">
+                <Section id="examples" title="More examples">
                     <div className="grid gap-6 md:grid-cols-2">
                         {gallery.map((photo) => (
                             <figure key={photo.alt}>
-                                <Compare before={photo.before} after={photo.after} alt={photo.alt} labels={false} />
+                                <Compare before={photo.before} after={photo.after} alt={photo.alt} beforeLabel={photo.beforeLabel} />
                                 <figcaption className="mt-3">
-                                    <p className="text-sm">{photo.note}</p>
-                                    <p className="mt-2 flex flex-wrap gap-1.5">
-                                        {photo.modules.map((m) => <Badge key={m}>{m}</Badge>)}
-                                    </p>
+                                    <p className="text-sm">{photo.caption}</p>
+                                    {photo.modules && (
+                                        <p className="mt-2 flex flex-wrap gap-1.5">
+                                            {photo.modules.map((m) => <Badge key={m}>{m}</Badge>)}
+                                        </p>
+                                    )}
                                 </figcaption>
                             </figure>
                         ))}
