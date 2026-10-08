@@ -67,25 +67,25 @@ This file is for **developing** the tool. The prompt for the Claude that *edits 
   login (`~/.claude/.credentials.json`), the Heimdall sign-in (`state/heimdall.json`) and
   the user secrets are plain files, so S4U can read them.
 
-## Website: Cloudflare Pages
+## Website: Cloudflare Workers
 
-`site/` deploys through Cloudflare Pages' Git integration: Cloudflare builds every push.
-`master` goes to production at lighttable.sstrabe.dev, and other branches get preview URLs
-(`<branch>.lighttable.pages.dev`). It is set up once in the dashboard (Workers & Pages →
-Create → Pages → Connect to Git):
+`site/` is served by the `lighttable` Worker as static assets only (`site/wrangler.jsonc`:
+the `out/` folder, with `404.html` for missing paths). Workers Builds, the Worker's Git
+integration, builds every push, and `master` goes to production at lighttable.sstrabe.dev.
+Without `wrangler.jsonc`, `wrangler deploy` takes the app for a server-rendered one and tries
+to set it up with OpenNext, which fails on a static export. The Worker's settings:
 
 | Setting | Value |
 |---|---|
-| Project name | `lighttable` |
+| Worker name | `lighttable` (must match `name` in `wrangler.jsonc`) |
 | Production branch | `master` |
-| Framework preset | Next.js (Static HTML Export) |
-| Build command | `npm run build` (not the preset's `npx next build`, which skips copying the logo) |
-| Build output directory | `out` |
 | Root directory | `site` |
+| Build command | `npm run build` (it copies the logo before `next build`) |
+| Deploy command | `npx wrangler deploy` |
 | Build watch paths (Settings → Build) | include `site/*` and `assets/logo/*` |
-| Custom domain | `lighttable.sstrabe.dev` (Cloudflare adds the DNS record) |
+| Custom domain (Settings → Domains & Routes) | `lighttable.sstrabe.dev` (Cloudflare adds the DNS record) |
 
-Pages reads `site/.node-version` for the Node version.
+The build reads `site/.node-version` for the Node version.
 
 ## The runtime home must not be under AppData
 
