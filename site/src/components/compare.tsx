@@ -1,13 +1,14 @@
 "use client";
 
-// A before/after slider: the edit underneath, darktable's defaults on top, clipped at the handle.
+// A before/after slider: the edit underneath, the "before" image on top, clipped at the handle.
 // Drag anywhere on the photo, or focus it and use the arrow keys (a visually hidden range input).
 
 import { useRef, useState, type PointerEvent } from "react";
 import { cx } from "@/components/ui";
 
-export function Compare({ before, after, alt, className, labels = true }: {
+export function Compare({ before, after, alt, beforeLabel = "darktable defaults", className, labels = true }: {
     before: string;
+    beforeLabel?: string;
     after: string;
     alt: string;
     className?: string;
@@ -36,14 +37,14 @@ export function Compare({ before, after, alt, className, labels = true }: {
             <img src={after} alt={`${alt}, edited by Claude`} draggable={false}
                  className="absolute inset-0 size-full object-cover" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={before} alt={`${alt}, with darktable's defaults`} draggable={false}
+            <img src={before} alt={`${alt}, ${beforeLabel}`} draggable={false}
                  className="absolute inset-0 size-full object-cover"
                  style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} />
 
             {labels && (
                 <>
                     <span className="pointer-events-none absolute top-3 left-3 rounded bg-surface/90 px-1.5 py-0.5 text-xs font-medium text-fg shadow-card">
-                        darktable defaults
+                        {beforeLabel}
                     </span>
                     <span className="pointer-events-none absolute top-3 right-3 rounded bg-surface/90 px-1.5 py-0.5 text-xs font-medium text-fg shadow-card">
                         Claude&apos;s edit
@@ -53,7 +54,7 @@ export function Compare({ before, after, alt, className, labels = true }: {
 
             <input type="range" min={0} max={100} step={1} value={Math.round(position)}
                    onChange={(event) => setPosition(Number(event.target.value))}
-                   aria-label={`Compare ${alt}: darktable's defaults on the left, Claude's edit on the right`}
+                   aria-label={`Compare ${alt}: ${beforeLabel} on the left, Claude's edit on the right`}
                    className="sr-only" />
             <div className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white/90 shadow-[0_0_0_1px_rgb(0_0_0/0.15)]"
                  style={{ left: `${position}%` }}>
