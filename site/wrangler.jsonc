@@ -7,5 +7,7 @@
     "assets": {
         "directory": "./out",
         "not_found_handling": "404-page"
-    }
+    },
+    // Per-branch previews (Workers Builds runs `npx wrangler preview`) need this block, even empty.
+    "previews": {}
 }
