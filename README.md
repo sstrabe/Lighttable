@@ -131,7 +131,8 @@ make edits lighter, set `Claude:Model` (for example `sonnet`) or `Claude:Effort`
 
 ## Development
 
-See `CLAUDE.md` for the architecture and the darktable details. Build and test with:
+See `CLAUDE.md` for the architecture and the darktable details. The website, lighttable.sstrabe.dev,
+is in `site/`. Build and test with:
 
 ```bash
 dotnet test PhotoProcessing.slnx

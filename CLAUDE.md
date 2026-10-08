@@ -13,7 +13,8 @@ This file is for **developing** the tool. The prompt for the Claude that *edits 
 
 - C# / .NET 10, Windows only. darktable 5.6.1 is installed per-user at
   `%LOCALAPPDATA%\Programs\darktable` and is on PATH.
-- **No Python, anywhere.** Use C# for code and PowerShell for scripts.
+- **No Python, anywhere.** Use C# for code and PowerShell for scripts. The website in `site/` is
+  the one exception: it is a Next.js app, so TypeScript and Node.
 - Claude is invoked only through the `claude` CLI (`claude -p`, the user's subscription).
   **Never** use the Anthropic API or SDK, and never require an API key. `--bare` is out
   because it forces API-key auth.
@@ -55,13 +56,36 @@ This file is for **developing** the tool. The prompt for the Claude that *edits 
   the hand-drawn wordmark). `dotnet run scripts/render-logo.cs` renders the committed PNGs and
   `.ico` files from them. `lighttable.ico` is both exes' `ApplicationIcon`, and Core embeds
   `mark.svg` for the `photoedit login` landing page. The tray's notification-area icon is
-  separate: `TrayIcons` draws a status-coloured lens at runtime.
+  separate: `TrayIcons` draws a status-coloured lens at runtime. The website copies its logo
+  files from here when it builds.
+- `site/`: the landing page at lighttable.sstrabe.dev, a static Next.js export in the Heimdall
+  family style with a violet accent. `site/CLAUDE.md` covers working on it.
 - `tests/`: xUnit tests. `Fixtures/baseline-IMG_4899.xmp` is real darktable 5.6.1 output.
 - `scripts/`: `publish.ps1` (both apps), `install-watcher.ps1`, `uninstall-watcher.ps1` and `install-tray.ps1` (`-Uninstall` removes it). The
   watcher is a scheduled task with boot and logon triggers, using S4U logon ("run whether
   logged on or not", no stored password). It runs in session 0 with no window. Claude's
   login (`~/.claude/.credentials.json`), the Heimdall sign-in (`state/heimdall.json`) and
   the user secrets are plain files, so S4U can read them.
+
+## Website: Cloudflare Pages
+
+`site/` deploys through Cloudflare Pages' Git integration: Cloudflare builds every push.
+`master` goes to production at lighttable.sstrabe.dev, and other branches get preview URLs
+(`<branch>.lighttable.pages.dev`). It is set up once in the dashboard (Workers & Pages →
+Create → Pages → Connect to Git):
+
+| Setting | Value |
+|---|---|
+| Project name | `lighttable` |
+| Production branch | `master` |
+| Framework preset | Next.js (Static HTML Export) |
+| Build command | `npm run build` (not the preset's `npx next build`, which skips copying the logo) |
+| Build output directory | `out` |
+| Root directory | `site` |
+| Build watch paths (Settings → Build) | include `site/*` and `assets/logo/*` |
+| Custom domain | `lighttable.sstrabe.dev` (Cloudflare adds the DNS record) |
+
+Pages reads `site/.node-version` for the Node version.
 
 ## The runtime home must not be under AppData
 
