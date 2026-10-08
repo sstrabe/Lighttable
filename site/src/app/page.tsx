@@ -14,84 +14,23 @@ import {
 import type { ReactNode } from "react";
 import { Compare } from "@/components/compare";
 import { Lockup } from "@/components/logo";
-import { Badge, buttonClass, Code, cx, KeyValue } from "@/components/ui";
+import { Badge, buttonClass, cx, KeyValue, Rich } from "@/components/ui";
+import { WebMcpTools } from "@/components/webmcp";
+import { adjustments, gallery, hero, intro, outputs, outputsNote, repo, requirements, setupGuide, steering, steps, background, watcherStates } from "@/content";
 
 export const metadata: Metadata = {
     alternates: { canonical: "/" },
 };
 
-const repo = "https://github.com/sstrabe/Lighttable";
-const setupGuide = `${repo}#setup`;
-
-// A real edit: the camera's own JPEG and Claude's edit of the raw, made without instructions, with lines from its notes.md.
-const hero = { before: "/photos/forest-before.jpg", after: "/photos/forest-after.jpg", alt: "A forest valley in the mountains" };
-const heroModules = ["exposure", "color calibration", "sigmoid", "tone equalizer", "color balance rgb", "local contrast"];
-
-const gallery: { before: string; after: string; alt: string; beforeLabel: string; caption: string; modules?: string[] }[] = [
-    {
-        // A real edit, the camera's JPEG against Claude's, with lines from its notes.md.
-        before: "/photos/contrail-before.jpg",
-        after: "/photos/contrail-after.jpg",
-        alt: "A contrail over trees at dusk",
-        beforeLabel: "Camera JPEG",
-        caption: "No instructions. From Claude's notes: “The sky looked slightly grey and flat.” Claude added vibrance and contrast for a cleaner twilight blue and kept the as-shot white balance. It tried deeper blacks first, saw they erased the meadow, and backed off.",
-        modules: ["exposure", "sigmoid", "color balance rgb"],
-    },
-    {
-        // A real edit, the camera's JPEG against Claude's, with lines from its notes.md.
-        before: "/photos/dusk-before.jpg",
-        after: "/photos/dusk-after.jpg",
-        alt: "Dusk over the mountains",
-        beforeLabel: "Camera JPEG",
-        caption: "Instructions: “make the sunset pop”. From Claude's notes: “The sky was slightly hazy and flat and the sunset glow looked washed out.” Claude warmed the white balance with a touch of magenta to keep the salmon-pink glow, and lifted the shadows gently to separate the ridges.",
-        modules: ["exposure", "color calibration", "sigmoid", "color balance rgb", "local contrast", "tone equalizer"],
-    },
-];
-
-const steps: { icon: ReactNode; title: string; text: ReactNode }[] = [
-    {
-        icon: <Upload />,
-        title: "Upload",
-        text: <>Put a raw file in <Code>Photos/Processing/Inbox</Code> on Nextcloud. CR2, CR3, NEF, ARW, DNG, RAF and other formats work.</>,
-    },
-    {
-        icon: <HardDriveDownload />,
-        title: "Pick up",
-        text: "Within a minute or two, the watcher on your PC downloads it and renders darktable's defaults as the starting point.",
-    },
-    {
-        icon: <SlidersHorizontal />,
-        title: "Edit",
-        text: "Claude looks at each render, adjusts the edit and renders again, then judges the result before it exports.",
-    },
-    {
-        icon: <FolderCheck />,
-        title: "Deliver",
-        text: "The full-size JPEG goes to Processed. The raw moves to Archive with its darktable sidecar and Claude's notes.",
-    },
-];
-
-const outputs: { icon: ReactNode; name: string; folder: string; contents: string }[] = [
-    { icon: <FileImage />, name: "IMG_4899.jpg", folder: "Processed", contents: "The finished JPEG at full resolution" },
-    { icon: <FileImage />, name: "IMG_4899.CR2", folder: "Archive", contents: "The raw, moved out of the inbox" },
-    { icon: <FileCode />, name: "IMG_4899.CR2.xmp", folder: "Archive", contents: "The edit as darktable history" },
-    { icon: <FileText />, name: "IMG_4899.notes.md", folder: "Archive", contents: "What Claude saw, what it changed and why" },
-    { icon: <FileX />, name: "IMG_4899.CR2.error.txt", folder: "Failed", contents: "Why the edit failed, next to the raw" },
-];
-
-// The recipe's sections and the darktable module each one compiles to (src/PhotoProcessing.Core).
-const adjustments: [string, string][] = [
-    ["Exposure and black level", "exposure"],
-    ["White balance", "color calibration"],
-    ["Tone mapping", "sigmoid"],
-    ["Shadows and highlights", "tone equalizer"],
-    ["Colour and grading", "color balance rgb"],
-    ["Local contrast", "local contrast"],
-    ["Noise", "denoise (profiled)"],
-    ["Sharpening", "sharpen"],
-    ["Straightening", "rotate and perspective"],
-    ["Crop", "crop"],
-];
+// The text and photos are in content.ts, shared with the page's WebMCP tools.
+const stepIcons: ReactNode[] = [<Upload key="upload" />, <HardDriveDownload key="pick-up" />, <SlidersHorizontal key="edit" />, <FolderCheck key="deliver" />];
+const outputIcons: Record<string, ReactNode> = {
+    ".jpg": <FileImage />,
+    ".CR2": <FileImage />,
+    ".xmp": <FileCode />,
+    ".md": <FileText />,
+    ".txt": <FileX />,
+};
 
 function Section({ id, title, description, children, className }: {
     id: string;
@@ -134,10 +73,7 @@ export default function Home() {
                             <h1 id="hero-title" className="max-w-3xl text-[30px] leading-[1.15] font-semibold tracking-tight sm:text-[36px]">
                                 Upload a raw. Get back a finished photo, edited by Claude in darktable.
                             </h1>
-                            <p className="mt-3 max-w-2xl text-[15px] text-muted">
-                                Drop a raw file in Nextcloud and a JPEG comes back a few minutes later. The edit comes
-                                with it as darktable history, so you can open the raw and take it further yourself.
-                            </p>
+                            <p className="mt-3 max-w-2xl text-[15px] text-muted">{intro}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
                             <a href={setupGuide} className={buttonClass("primary")}><BookOpen /> Read the setup guide</a>
@@ -145,32 +81,26 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <Compare {...hero} className="mt-8" />
+                    <Compare before={hero.before} after={hero.after} alt={hero.alt} beforeLabel={hero.beforeLabel} className="mt-8" />
                     <div className="mt-3 flex flex-wrap items-start justify-between gap-x-8 gap-y-2">
-                        <p className="max-w-3xl text-sm">
-                            No instructions. From Claude&apos;s notes: “The backlit conifers were nearly black and the sky
-                            was washed out.” Claude lifted the shadows to open the forest, pulled the highlights down to
-                            keep the clouds, and left some of the mountain haze in because it is part of the scene.
-                        </p>
+                        <p className="max-w-3xl text-sm">{hero.caption}</p>
                         <p className="text-[13px] text-muted">Drag across the photo to compare.</p>
                     </div>
                     <p className="mt-2 flex flex-wrap gap-1.5">
-                        {heroModules.map((m) => <Badge key={m}>{m}</Badge>)}
+                        {hero.modules.map((m) => <Badge key={m}>{m}</Badge>)}
                     </p>
                 </section>
 
                 <Section id="examples" title="More examples">
                     <div className="grid gap-6 md:grid-cols-2">
                         {gallery.map((photo) => (
-                            <figure key={photo.alt}>
+                            <figure key={photo.id} id={`example-${photo.id}`} className="scroll-mt-20">
                                 <Compare before={photo.before} after={photo.after} alt={photo.alt} beforeLabel={photo.beforeLabel} />
                                 <figcaption className="mt-3">
                                     <p className="text-sm">{photo.caption}</p>
-                                    {photo.modules && (
-                                        <p className="mt-2 flex flex-wrap gap-1.5">
-                                            {photo.modules.map((m) => <Badge key={m}>{m}</Badge>)}
-                                        </p>
-                                    )}
+                                    <p className="mt-2 flex flex-wrap gap-1.5">
+                                        {photo.modules.map((m) => <Badge key={m}>{m}</Badge>)}
+                                    </p>
                                 </figcaption>
                             </figure>
                         ))}
@@ -182,12 +112,12 @@ export default function Home() {
                         {steps.map((step, i) => (
                             <li key={step.title} className="border-t border-line pt-4">
                                 <span className="inline-flex size-8 items-center justify-center rounded-md bg-primary-soft text-link [&_svg]:size-4">
-                                    {step.icon}
+                                    {stepIcons[i]}
                                 </span>
                                 <h3 className="mt-3 text-sm font-semibold">
                                     <span className="font-medium text-muted">{i + 1}.</span> {step.title}
                                 </h3>
-                                <p className="mt-1 text-[13px] text-muted">{step.text}</p>
+                                <p className="mt-1 text-[13px] text-muted"><Rich text={step.text} /></p>
                             </li>
                         ))}
                     </ol>
@@ -195,11 +125,11 @@ export default function Home() {
 
                 <div className="grid items-start gap-x-10 gap-y-16 lg:grid-cols-[3fr_2fr]">
                     <Section id="output" title="What comes back"
-                             description={<>In <Code>Photos/Processing</Code>, next to the inbox. A raw that fails twice goes to Failed; move it back to retry.</>}>
+                             description={<Rich text={outputsNote} />}>
                         <ul className="divide-y divide-line-subtle rounded-lg border border-line bg-surface shadow-card">
                             {outputs.map((file) => (
                                 <li key={file.name} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
-                                    <span className="text-faint [&_svg]:size-4">{file.icon}</span>
+                                    <span className="text-faint [&_svg]:size-4">{outputIcons[file.name.slice(file.name.lastIndexOf("."))]}</span>
                                     <span className="font-mono text-[12.5px]">{file.name}</span>
                                     <Badge>{file.folder}</Badge>
                                     <span className="w-full text-[13px] text-muted sm:ml-auto sm:w-auto">{file.contents}</span>
@@ -225,8 +155,8 @@ export default function Home() {
                          description="Claude follows your instructions over its own taste.">
                     <div className="grid gap-6 lg:grid-cols-3">
                         <div className="rounded-lg border border-line bg-surface p-5 shadow-card">
-                            <h3 className="text-sm font-semibold">Give instructions</h3>
-                            <p className="mt-1 text-[13px] text-muted">Upload a text file with the same name next to the raw.</p>
+                            <h3 className="text-sm font-semibold">{steering[0].title}</h3>
+                            <p className="mt-1 text-[13px] text-muted">{steering[0].text}</p>
                             <ul className="mt-3 divide-y divide-line-subtle rounded-md border border-line bg-subtle font-mono text-[12.5px]">
                                 <li className="flex items-center gap-2 px-3 py-2">
                                     <FileImage className="size-4 text-faint" /> Inbox/IMG_4899.CR2
@@ -239,50 +169,31 @@ export default function Home() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="rounded-lg border border-line bg-surface p-5 shadow-card">
-                            <h3 className="text-sm font-semibold">Re-edit with Claude</h3>
-                            <p className="mt-1 text-[13px] text-muted">
-                                Open the editor workspace in Claude Code and ask for changes, such as “make it a bit
-                                warmer and less cropped, then finalize”.
-                            </p>
-                        </div>
-                        <div className="rounded-lg border border-line bg-surface p-5 shadow-card">
-                            <h3 className="text-sm font-semibold">Refine it yourself</h3>
-                            <p className="mt-1 text-[13px] text-muted">
-                                Open the archived raw in darktable. Claude&apos;s edit loads as history you can change
-                                step by step.
-                            </p>
-                        </div>
+                        {steering.slice(1).map((way) => (
+                            <div key={way.title} className="rounded-lg border border-line bg-surface p-5 shadow-card">
+                                <h3 className="text-sm font-semibold">{way.title}</h3>
+                                <p className="mt-1 text-[13px] text-muted">{way.text}</p>
+                            </div>
+                        ))}
                     </div>
                 </Section>
 
                 <div className="grid items-start gap-x-10 gap-y-16 lg:grid-cols-2">
                     <Section id="background" title="Runs in the background"
-                             description="A scheduled task starts the watcher at boot, before anyone signs in. Photos are edited one at a time, and the tray icon shows what it's doing.">
-                        <KeyValue items={[
-                            { label: <Badge tone="success" dot>Watching</Badge>, value: "The inbox is checked for new photos." },
-                            { label: <Badge tone="info" dot>Editing</Badge>, value: "Claude is working on a photo. The tooltip shows the step." },
-                            { label: <Badge tone="warning" dot>No recent check</Badge>, value: "The inbox hasn't been checked for a while." },
-                            { label: <Badge tone="danger" dot>Error</Badge>, value: "Something needs you, such as signing in to Heimdall again." },
-                        ]} />
+                             description={background}>
+                        <KeyValue items={watcherStates.map((state) => (
+                            { label: <Badge tone={state.tone} dot>{state.label}</Badge>, value: state.text }
+                        ))} />
                     </Section>
 
                     <Section id="requirements" title="Requirements">
-                        <KeyValue items={[
-                            { label: "PC", value: "Windows, with the .NET 10 SDK" },
-                            { label: "darktable", value: "5.6" },
-                            { label: "Claude Code", value: "Signed in with your Claude plan. Each photo counts toward its usage limits." },
-                            {
-                                label: "Nextcloud",
-                                value: <>An account that signs in with{" "}
-                                    <a href="https://heimdall.strabix.com" className="text-link hover:underline">Heimdall</a>,
-                                    with a <Code>Photos/Processing/Inbox</Code> folder</>,
-                            },
-                        ]} />
+                        <KeyValue items={requirements.map((r) => ({ label: r.label, value: <Rich text={r.text} /> }))} />
                         <a href={setupGuide} className={cx(buttonClass("secondary"), "mt-5")}><BookOpen /> Read the setup guide</a>
                     </Section>
                 </div>
             </main>
+
+            <WebMcpTools />
 
             <footer className="mx-auto w-full max-w-6xl px-4 pb-8 lg:px-8">
                 <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-line pt-4 text-[13px] text-muted">

@@ -2,6 +2,7 @@
 // this site uses them.
 
 import type { ReactNode } from "react";
+import { parts } from "@/content";
 
 export function cx(...classes: (string | false | null | undefined)[]) {
     return classes.filter(Boolean).join(" ");
@@ -114,5 +115,14 @@ export function Td({ children, muted }: { children: ReactNode; muted?: boolean }
             muted && "text-muted")}>
             {children}
         </td>
+    );
+}
+
+// Renders a text from content.ts, with its `code` and [links](url).
+export function Rich({ text }: { text: string }) {
+    return parts(text).map((part, i) =>
+        typeof part === "string" ? part
+            : "code" in part ? <Code key={i}>{part.code}</Code>
+            : <a key={i} href={part.href} className="text-link hover:underline">{part.link}</a>
     );
 }
