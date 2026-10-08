@@ -6,7 +6,7 @@
 import { useRef, useState, type PointerEvent } from "react";
 import { cx } from "@/components/ui";
 
-export function Compare({ before, after, alt, beforeLabel = "darktable defaults", className, labels = true }: {
+export function Compare({ before, after, alt, beforeLabel = "Camera JPEG", className, labels = true }: {
     before: string;
     beforeLabel?: string;
     after: string;

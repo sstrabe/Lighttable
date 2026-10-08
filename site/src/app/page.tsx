@@ -36,11 +36,11 @@ const gallery: { before: string; after: string; alt: string; beforeLabel: string
         caption: "Dusk, with the trees in silhouette. A cleaner, bluer sky and a brighter contrail, with the blacks kept solid.",
     },
     {
-        // A real edit, darktable's default render against Claude's, with lines from its notes.md.
+        // A real edit, the camera's JPEG against Claude's, with lines from its notes.md.
         before: "/photos/dusk-before.jpg",
         after: "/photos/dusk-after.jpg",
         alt: "Dusk over the mountains",
-        beforeLabel: "darktable defaults",
+        beforeLabel: "Camera JPEG",
         caption: "Instructions: “make the sunset pop”. From Claude's notes: “The sky was slightly hazy and flat and the sunset glow looked washed out.” Claude warmed the white balance with a touch of magenta to keep the salmon-pink glow, and lifted the shadows gently to separate the ridges.",
         modules: ["exposure", "color calibration", "sigmoid", "color balance rgb", "local contrast", "tone equalizer"],
     },
