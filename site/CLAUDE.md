@@ -20,6 +20,13 @@ It is a static site, so there is no server code, no cookies, no route handlers a
 - **Copy:** say what things do, briefly, in sentence case. Facts about the tool (folders, file
   names, timings, darktable modules) come from the code and the README, so check them there when
   the tool changes.
+- **Text:** the page's copy and example edits live in `src/content.ts`, which marks `code` and
+  [links](url) in plain strings. `Rich` in `src/components/ui.tsx` renders them.
+- **WebMCP:** `src/components/webmcp.tsx` registers read-only tools for AI agents in the browser
+  (`get_lighttable_overview`, `list_example_edits`, `show_on_page`) on `document.modelContext`, built
+  from `content.ts`, so a copy change reaches them too. Without WebMCP support it does nothing. Types
+  come from `webmcp-types`, the spec group's package; the API is still changing, so check it when
+  bumping that package.
 - `public/_headers` sets the response headers (Cloudflare reads it from the assets folder).
 
 ```bash
