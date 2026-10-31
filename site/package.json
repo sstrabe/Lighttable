@@ -26,6 +26,6 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "webmcp-types": "0.1.10",
-    "wrangler": "4.144.0"
+    "wrangler": "4.156.0"
   }
 }
